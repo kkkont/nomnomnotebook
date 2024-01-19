@@ -5,6 +5,7 @@
         <a><router-link to="/">MY RECIPES</router-link></a>
         <a><router-link to="/about">SHARED RECIPES</router-link></a>
     </nav>
+    <img src="../assets/icons8-user-30.png" id="user">
 </div>
 </template>
 <script>
@@ -41,5 +42,8 @@ nav a:hover{
 }
 nav a.router-link-exact-active {
   color: #ff4136;
+}
+#user{
+    width:50px;
 }
 </style>
