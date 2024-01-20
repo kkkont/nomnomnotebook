@@ -37,12 +37,14 @@ const createTblQuery1 = `
         "urllink" VARCHAR(200), 
         "date" VARCHAR(200) NOT NULL,
         "author" VARCHAR(200) NOT NULL,
-        "likes" INT
+        "likes" INT,
+        "comments" INT
     );`;
 
     const createTblQuery2 = `
     CREATE TABLE IF NOT EXISTS "recipecommenttable" (
-	    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),         
+	    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        "recipe_id" uuid NOT NULL,         
 	    "body" VARCHAR(200) NOT NULL,
         "urllink" VARCHAR(200), 
         "date" VARCHAR(200) NOT NULL,
@@ -51,8 +53,8 @@ const createTblQuery1 = `
     );`;
 
     const createRecipeQuery = `
-    INSERT INTO recipestable(title, body, urllink, date, author, likes)
-    VALUES ('Esimene retsept', 'Muna ja sool', '', '26-04-2024', 'Kadri', 6)
+    INSERT INTO recipestable(title, body, urllink, date, author, likes, comments)
+    VALUES ('Esimene retsept', 'Muna ja sool', '', '26-04-2024', 'Kadri', 6, 8)
     RETURNING *`;
 
 

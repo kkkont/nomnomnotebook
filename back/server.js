@@ -19,10 +19,10 @@ app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
 
-app.post('/api/posts', async (req, res) => {
+app.post('/api/recipes', async (req, res) => {
     try {
-        console.log("a post request has arrived");
-        const post = {
+        console.log("Add a recipe request has arrived");
+        const recipe = {
             title: req.body.title,
             body: req.body.body,
             urllink: req.body.urllink,
@@ -30,23 +30,23 @@ app.post('/api/posts', async (req, res) => {
             author: req.body.author,
             likes: req.body.likes
         };
-        const newPost = await pool.query(
-            'INSERT INTO posttable(title,body,urllink, date, author,likes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [post.title, post.body, post.urllink, post.date, post.author, post.likes]
+        const newRecipe = await pool.query(
+            'INSERT INTO recipestable(title,body,urllink, date, author,likes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [recipe.title, recipe.body, recipe.urllink, recipe.date, recipe.author, recipe.likes]
         );
-        res.json(newPost);
+        res.json(newRecipe);
     } catch (error) {
         console.error(error.message);
     }
 });
 
-app.get('/api/posts', async (req, res) => {
+app.get('/api/recipes', async (req, res) => {
     try {
-        console.log("get posts request has arrived");
-        const posts = await pool.query(
-            "SELECT * FROM posttable"
+        console.log("Get all recipes request has arrived");
+        const recipes = await pool.query(
+            "SELECT * FROM recipestable"
         );
-        res.json(posts.rows);
+        res.json(recipes.rows);
     } catch (err) {
         console.error(err.message);
     }
