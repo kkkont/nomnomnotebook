@@ -26,7 +26,10 @@ const createTblQuery = `
     CREATE TABLE IF NOT EXISTS "users" (
         id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         email VARCHAR(200) NOT NULL UNIQUE,
-        password VARCHAR(200) NOT NULL 
+        password VARCHAR(200) NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        description VARCHAR(200),
+        urllink VARCHAR(200) DEFAULT 'icons8-user-30.png'::VARCHAR
     );`;
 
 const createTblQuery1 = `
@@ -38,7 +41,8 @@ const createTblQuery1 = `
         "date" VARCHAR(200) NOT NULL,
         "author" VARCHAR(200) NOT NULL,
         "likes" INT,
-        "comments" INT
+        "comments" INT,
+        "public" BOOLEAN
     );`;
 
     const createTblQuery2 = `
@@ -53,8 +57,8 @@ const createTblQuery1 = `
     );`;
 
     const createRecipeQuery = `
-    INSERT INTO recipestable(title, body, urllink, date, author, likes, comments)
-    VALUES ('Esimene retsept', 'Muna ja sool', '', '26-04-2024', 'Kadri', 6, 8)
+    INSERT INTO recipestable(title, body, urllink, date, author, likes, comments, public)
+    VALUES ('Esimene retsept', 'Muna ja sool', '', '26-04-2024', 'Kadri', 6, 8, false)
     RETURNING *`;
 
 

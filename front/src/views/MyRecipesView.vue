@@ -13,17 +13,27 @@
         <button class="addbutton">Add a recipe</button>
       </div>
      <div class="recipes">
-        recipes
+        <AllRecipesComponent></AllRecipesComponent>
       </div>
     </div>
   </template>
   
   <script>
   import HeaderComponent from '@/components/HeaderComponent.vue'
+  import AllRecipesComponent from '@/components/AllRecipesComponent.vue';
   export default {
     name: 'MyRecipesView',
     components: {
-      HeaderComponent
+      HeaderComponent,
+      AllRecipesComponent,
+    },
+    methods:{
+        fetchRecipes() {
+        fetch(`http://localhost:3000/api/recipes/`)
+            .then((response) => response.json())
+         .then((data) => (this.recipes = data))
+         .catch((err) => console.log(err.message));
+    },
     }
   }
   </script>
@@ -54,6 +64,7 @@
 
   .recipes{
     display:flex;
+    flex-direction: column;
     width:70%;
     margin:20px;
     padding:20px;

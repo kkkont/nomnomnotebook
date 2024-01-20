@@ -2,7 +2,7 @@
 <div class="header">
     <img src="../assets/logo-no-background copy.png" id="logo">
     <nav>
-        <a><router-link to="/">MY RECIPES</router-link></a>
+        <a><router-link to="/myrecipes">MY RECIPES</router-link></a>
         <a><router-link to="/shared">SHARED RECIPES</router-link></a>
     </nav>
     <img src="../assets/icons8-user-30.png" id="user">
