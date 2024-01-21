@@ -23,46 +23,53 @@
   </template>
   
   <script>
-  export default {
-    name: 'FrontPageView',
-    data() {
+   export default {
+  name: "LogIn", 
+  
+  data: function() {
       return {
         showLogo: true,
-        email: '',
-        password: '',
-      };
+     email: '',
+     password: '',
+    }
     },
     beforeMount() {
       setTimeout(() => {
         this.showLogo = false;
-      }, 1000);
+      }, 3000);
     },
     methods: {
-        LogIn() {
+  
+  
+  LogIn() {
         var data = {
           email: this.email,
           password: this.password
         };
+        
+        // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
         fetch("http://localhost:3000/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-            credentials: 'include', 
+            credentials: 'include', //  Don't forget to specify this if you need cookies
             body: JSON.stringify(data),
         })
         .then((response) => response.json())
         .then((data) => {
         console.log(data);
-        location.assign("/myrecipes");
+        //this.$router.push("/");
+        location.assign("/");
         })
         .catch((e) => {
           console.log(e);
-          console.log("Log in error");
+          console.log("error");
         });
-      }
-    },
-  };
+      },
+    }, 
+    }
+  
   </script>
   <style>
   .introduction {

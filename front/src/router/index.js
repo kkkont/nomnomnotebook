@@ -3,12 +3,21 @@ import MyRecipesView from '../views/MyRecipesView.vue'
 import AllRecipesView from '../views/AllRecipesView.vue'
 import FrontPageView from '../views/FrontPageView.vue'
 import SignUpView from '../views/SignUpView.vue'
+import auth from "../auth";
 
 const routes = [
   {
-    path: '/myrecipes',
+    path: '/',
     name: 'myrecipes',
-    component: MyRecipesView
+    component: MyRecipesView,
+    beforeEnter: async(to, from, next) => {
+      let authResult = await auth.authenticated();
+      if (!authResult) {
+          next('/welcome')
+      } else {
+          next();
+      }
+  }
   },
   {
     path: '/shared',
@@ -16,7 +25,7 @@ const routes = [
     component: AllRecipesView
   },
   {
-    path: '/',
+    path: '/welcome',
     name: 'frontpage',
     component: FrontPageView
   },

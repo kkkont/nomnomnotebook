@@ -4,13 +4,14 @@
       <div class="sidebar">
         <div class="account">
           <img src="https://www.basket.ee/cache/basket/public/remote/http_is-basket-ee/_2000x2000x0/bw-client-filesXbasketisXpublicXplayer-pictureX3919-v1701256513-Luuna-NML-7.jpg" id="profilephoto">
-          <h1>kkkont</h1>
+          <h1>{{user.name}}</h1>
           <div class="about">
             <font-awesome-icon icon="quote-left" class="fa-quote-left icon"></font-awesome-icon>
-            <p class="aboutquote">i like cooking chicken and rice</p>
+            <p class="aboutquote">{{ user.description }}</p>
           </div>
         </div>
         <button class="addbutton">Add a recipe</button>
+        <button class="addbutton" v-if = "authResult" @click="Logout()">Log Out</button>
       </div>
      <div class="recipes">
         <AllRecipesComponent></AllRecipesComponent>
@@ -21,12 +22,18 @@
   <script>
   import HeaderComponent from '@/components/HeaderComponent.vue'
   import AllRecipesComponent from '@/components/AllRecipesComponent.vue';
+  import auth from "../auth";
   export default {
     name: 'MyRecipesView',
     components: {
       HeaderComponent,
       AllRecipesComponent,
     },
+    data: function() {
+   return { 
+    authResult: auth.authenticated(),
+    user:{},
+   }},
     methods:{
         fetchRecipes() {
         fetch(`http://localhost:3000/api/recipes/`)
@@ -34,7 +41,34 @@
          .then((data) => (this.recipes = data))
          .catch((err) => console.log(err.message));
     },
-    }
+    fetchUser() {
+      fetch(`http://localhost:3000/api/users/`)
+        .then((response) => response.json())
+        .then((data) => (this.user = data))
+        .catch((err) => console.log(err.message));
+    },
+    Logout() {
+      fetch("http://localhost:3000/auth/logout", {
+          credentials: 'include', //  Don't forget to specify this if you need cookies
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log('jwt removed');
+        //console.log('jwt removed:' + auth.authenticated());
+        this.$router.push("/welcome");
+        //location.assign("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("error logout");
+      });
+    },
+    },
+    mounted() {
+    this.fetchUser();
+    console.log("mounted");
+  }
   }
   </script>
   <style>
@@ -50,6 +84,7 @@
     display:flex;
     flex-direction: column;
     margin:20px;
+    width:25%;
     justify-content: center;
     align-items: center;
   }
@@ -57,6 +92,7 @@
     display:flex;
     flex-direction: column;
     align-items: center;
+    width:80%;
     padding:20px;
     border-radius: 25px;
     background-color: white;

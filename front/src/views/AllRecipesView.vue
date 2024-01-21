@@ -36,7 +36,7 @@
   .allrecipes {
     display: flex;
     justify-content: center;
-  }
+  }s
   
   .recipesshared {
     display: flex;
