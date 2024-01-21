@@ -29,7 +29,7 @@ const createTblQuery = `
         password VARCHAR(200) NOT NULL,
         name VARCHAR(200) NOT NULL,
         description VARCHAR(200),
-        urllink VARCHAR(200) DEFAULT 'icons8-user-30.png'::VARCHAR
+        urllink VARCHAR(200)
     );`;
 
 const createTblQuery1 = `

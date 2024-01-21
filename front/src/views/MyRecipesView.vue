@@ -3,7 +3,7 @@
     <div class="myrecipes">
       <div class="sidebar">
         <div class="account">
-          <img src="https://www.basket.ee/cache/basket/public/remote/http_is-basket-ee/_2000x2000x0/bw-client-filesXbasketisXpublicXplayer-pictureX3919-v1701256513-Luuna-NML-7.jpg" id="profilephoto">
+          <img :src="user.urllink" id="profilephoto">
           <h1>{{user.name}}</h1>
           <div class="about">
             <font-awesome-icon icon="quote-left" class="fa-quote-left icon"></font-awesome-icon>
@@ -109,6 +109,7 @@
   }
 
   #profilephoto{
+    background-color: white;
     height:200px;
     width:200px;
     object-fit: cover;

@@ -60,7 +60,7 @@ Ready to elevate your cooking experience? Register with NomNomNotebook and let t
           email: this.email,
           password: this.password,
           name: this.name,
-          urllink: this.urlllink,
+          urllink: this.urllink.trim() === '' ? "https://cdn-icons-png.flaticon.com/512/8038/8038492.png" : this.urllink,
           description: this.description
         };
         fetch("http://localhost:3000/auth/signup", {
@@ -74,7 +74,7 @@ Ready to elevate your cooking experience? Register with NomNomNotebook and let t
         .then((response) => response.json())
         .then((data) => {
         console.log(data);
-        this.$router.push("/myrecipes");
+        this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);

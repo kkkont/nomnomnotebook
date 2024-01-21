@@ -62,11 +62,10 @@ app.post('/auth/signup', async (req, res) => {
     try {
         console.log("A signup request has arrived");
         const { email, password, name, urllink, description } = req.body;
-
         const salt = await bcrypt.genSalt(); 
         const bcryptPassword = await bcrypt.hash(password, salt) 
         const authUser = await pool.query( 
-            "INSERT INTO users(email, password, name, urllink, description) values ($1, $2) RETURNING*", [email, bcryptPassword, name ,urllink, description]
+            "INSERT INTO users(email, password, name, urllink, description) values ($1, $2, $3, $4, $5) RETURNING*", [email, bcryptPassword, name ,urllink, description]
         );
         console.log(authUser.rows[0].id);
         const token = await generateJWT(authUser.rows[0].id);
