@@ -3,7 +3,7 @@
       <p class="item" v-for="recipe in recipes" :key="recipe.id">
         <div class="recipeHeader">
           <div class="user">
-            <img src="https://www.basket.ee/cache/basket/public/remote/http_is-basket-ee/_2000x2000x0/bw-client-filesXbasketisXpublicXplayer-pictureX3919-v1701256513-Luuna-NML-7.jpg" id="user_icon">
+            <img :src="recipe.authorimg" id="user_icon">
             <h4 class="author">{{ recipe.author }}</h4>
           </div>
           <h4 class="date">{{ new Date(recipe.date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) }}</h4>
@@ -50,6 +50,8 @@
   <style scoped>
   #recipes-component{
     background-color: white;
+    padding:30px;
+    border-radius:25px;
   }
 .item{
     display: flex;

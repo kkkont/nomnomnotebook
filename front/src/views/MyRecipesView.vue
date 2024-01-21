@@ -10,7 +10,7 @@
             <p class="aboutquote">{{ user.description }}</p>
           </div>
         </div>
-        <button class="addbutton">Add a recipe</button>
+        <button class="addbutton" @click='this.$router.push("/addrecipe")'>Add a recipe</button>
         <button class="addbutton" v-if = "authResult" @click="Logout()">Log Out</button>
       </div>
      <div class="recipes">
@@ -85,7 +85,6 @@
     flex-direction: column;
     margin:20px;
     width:25%;
-    justify-content: center;
     align-items: center;
   }
   .account{

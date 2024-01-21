@@ -1,12 +1,10 @@
 <template>
     <div>
       <HeaderComponent />
-      <div class="allrecipes">
-        <div class="recipesshared">
-          <div class="getrecipes">
-            <AllRecipesComponent/>
-          </div>
-        </div>
+      <div class="myrecipes">
+        <div class="recipes">
+        <AllRecipesComponent></AllRecipesComponent>
+      </div>
       </div>
     </div>
   </template>
@@ -33,25 +31,6 @@
   </script>
   
   <style>
-  .allrecipes {
-    display: flex;
-    justify-content: center;
-  }s
-  
-  .recipesshared {
-    display: flex;
-    width: 70%;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 25px;
-    background-color: white;
-    flex: column;
-  }
-  .getrecipes{
-    margin:auto;
-    width:80%;
-    background-color: white;
-    
-  }
+
   </style>
   

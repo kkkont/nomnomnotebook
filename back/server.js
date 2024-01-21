@@ -115,11 +115,15 @@ app.post('/api/recipes', async (req, res) => {
             urllink: req.body.urllink,
             date: req.body.date,
             author: req.body.author,
-            likes: req.body.likes
+            authorimg: req.body.authorimg,
+            authorid:req.body.authorid,
+            likes: req.body.likes,
+            comments:req.body.comments,
+            public:req.body.public
         };
         const newRecipe = await pool.query(
-            'INSERT INTO recipestable(title,body,urllink, date, author,likes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [recipe.title, recipe.body, recipe.urllink, recipe.date, recipe.author, recipe.likes]
+            'INSERT INTO recipestable(title,body,urllink, date, author, authorimg,authorid,likes,comments,public) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+            [recipe.title, recipe.body, recipe.urllink, recipe.date, recipe.author,recipe.authorimg,recipe.authorid, recipe.likes, recipe.comments,recipe.public]
         );
         res.json(newRecipe);
     } catch (error) {

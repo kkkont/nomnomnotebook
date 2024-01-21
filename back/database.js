@@ -29,7 +29,7 @@ const createTblQuery = `
         password VARCHAR(200) NOT NULL,
         name VARCHAR(200) NOT NULL,
         description VARCHAR(200),
-        urllink VARCHAR(200)
+        urllink VARCHAR(500)
     );`;
 
 const createTblQuery1 = `
@@ -40,6 +40,8 @@ const createTblQuery1 = `
         "urllink" VARCHAR(200), 
         "date" VARCHAR(200) NOT NULL,
         "author" VARCHAR(200) NOT NULL,
+        "authorimg" VARCHAR(500),
+        "authorid" uuid,
         "likes" INT,
         "comments" INT,
         "public" BOOLEAN
@@ -53,6 +55,7 @@ const createTblQuery1 = `
         "urllink" VARCHAR(200), 
         "date" VARCHAR(200) NOT NULL,
         "author" VARCHAR(200) NOT NULL,
+        "authorid" uuid,
         "likes" INT
     );`;
 

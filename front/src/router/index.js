@@ -3,6 +3,7 @@ import MyRecipesView from '../views/MyRecipesView.vue'
 import AllRecipesView from '../views/AllRecipesView.vue'
 import FrontPageView from '../views/FrontPageView.vue'
 import SignUpView from '../views/SignUpView.vue'
+import AddRecipeView from '../views/AddRecipeView.vue'
 import auth from "../auth";
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUpView
+  },
+  {
+    path:'/addrecipe',
+    name:'addrecipe',
+    component:AddRecipeView
   }
 ]
 
