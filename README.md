@@ -1,8 +1,35 @@
-# Project
+# Recipe blog application project
 
-# front
+## backend
 
-## Project setup
+### Navigate to the backend directory
+```
+cd back
+```
+
+### Install dependencies
+```
+npm install
+```
+
+### Run the project
+```
+npm start
+```
+
+or 
+```
+npm server.js
+```
+
+## frontend
+
+### Navigate to the frontend directory
+```
+cd front
+```
+
+### Project setup
 ```
 npm install
 ```
@@ -16,11 +43,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
