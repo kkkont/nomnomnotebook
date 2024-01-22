@@ -158,5 +158,14 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
-
+app.get('/api/myrecipes', async (req, res) => {
+    try {
+        console.log("Get active user recipe request has arrived");
+        const recipes = await pool.query(
+            "SELECT * FROM recipestable WHERE authorid = $1", [activeUserId]);
+        res.json(recipes.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 

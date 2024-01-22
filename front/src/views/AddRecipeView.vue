@@ -1,5 +1,6 @@
 <template>
     <HeaderComponent></HeaderComponent>
+    <div style="margin:20px">
     <div class="addpost">
       <h1>Add a Recipe</h1>
       <input type="title" name="title" required v-model="recipe.title" placeholder="The Name of Your Mouthwatering Creation">
@@ -17,6 +18,7 @@
       </div>
       <button @click="AddRecipe"  class="center">Drop Culinary Magic!</button>
     </div>
+  </div>
   </template>
 
 <script>

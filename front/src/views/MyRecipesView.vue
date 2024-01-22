@@ -14,20 +14,20 @@
         <button class="addbutton" v-if = "authResult" @click="Logout()">Log Out</button>
       </div>
      <div class="recipes">
-        <AllRecipesComponent></AllRecipesComponent>
+        <MyRecipesComponent></MyRecipesComponent>
       </div>
     </div>
   </template>
   
   <script>
   import HeaderComponent from '@/components/HeaderComponent.vue'
-  import AllRecipesComponent from '@/components/AllRecipesComponent.vue';
+  import MyRecipesComponent from '@/components/MyRecipesComponent.vue';
   import auth from "../auth";
   export default {
     name: 'MyRecipesView',
     components: {
       HeaderComponent,
-      AllRecipesComponent,
+      MyRecipesComponent,
     },
     data: function() {
    return { 
@@ -35,12 +35,6 @@
     user:{},
    }},
     methods:{
-        fetchRecipes() {
-        fetch(`http://localhost:3000/api/recipes/`)
-            .then((response) => response.json())
-         .then((data) => (this.recipes = data))
-         .catch((err) => console.log(err.message));
-    },
     fetchUser() {
       fetch(`http://localhost:3000/api/users/`)
         .then((response) => response.json())
