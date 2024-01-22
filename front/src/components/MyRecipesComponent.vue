@@ -38,7 +38,7 @@
             data.sort((a, b) => new Date(b.date) - new Date(a.date) );
             this.recipes = data;})
           .catch((err) => console.log(err.message));
-      }
+      },
     },
     mounted() {
       this.fetchRecipes();
