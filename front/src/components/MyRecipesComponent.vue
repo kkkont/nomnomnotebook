@@ -1,52 +1,65 @@
 <template>
-    <div id="recipes-component">
-      <p class="item" v-for="recipe in recipes" :key="recipe.id">
-        <div class="recipeHeader">
-          <div class="user">
-            <img :src="recipe.authorimg" id="user_icon">
-            <h4 class="author">{{ recipe.author }}</h4>
-          </div>
-          <h4 class="date">{{ new Date(recipe.date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) }}</h4>
+  <div id="recipes-component">
+    <p class="item" v-for="recipe in recipes" :key="recipe.id">
+      <div class="recipeHeader">
+        <div class="user">
+          <img :src="recipe.user.urllink" id="user_icon">
+          <h4 class="author">{{ recipe.user.name }}</h4>
         </div>
-        <h4 class="title">{{ recipe.title }}</h4>
-        <p class="text"> {{ recipe.body }} </p>
-        <img v-if="recipe.urllink" class="img" :src="recipe.urllink" alt="Post Image">
-        <div class="likescomments">
-            <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon>
-          <h4 class="likes"> {{ recipe.likes }} </h4>
-          <font-awesome-icon icon="comment" class="fa-regular fa-comment like"></font-awesome-icon>
-          <h4 class="comments"> {{ recipe.comments }} </h4>
-        </div>
-      </p>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "AllRecipesComponent",
-    data: function () {
-      return {
-        recipes: [],
-      }
+        <h4 class="date">{{ new Date(recipe.date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) }}</h4>
+      </div>
+      <h4 class="title">{{ recipe.title }}</h4>
+      <p class="text"> {{ recipe.body }} </p>
+      <img v-if="recipe.urllink" class="img" :src="recipe.urllink" alt="Post Image">
+      <div class="likescomments">
+        <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon>
+        <h4 class="likes"> {{ recipe.likes }} </h4>
+        <font-awesome-icon icon="comment" class="fa-regular fa-comment like"></font-awesome-icon>
+        <h4 class="comments"> {{ recipe.comments }} </h4>
+      </div>
+    </p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "AllRecipesComponent",
+  data: function () {
+    return {
+      recipes: [],
+    }
+  },
+
+  methods: {
+    fetchRecipes() {
+      fetch(`http://localhost:3000/api/myrecipes/`)
+        .then(response => response.json())
+        .then(data => {
+          data.sort((a, b) => new Date(b.date) - new Date(a.date) );
+          const userPromises = data.map(recipe => this.fetchUser(recipe.authorid));
+          return Promise.all(userPromises).then(users => {
+            this.recipes = data.map((recipe, index) => ({
+              ...recipe,
+              user: users[index],
+            }));
+          });
+        })
+        .catch(err => console.log(err.message));
     },
-  
-    methods: {
-      fetchRecipes() {
-        fetch(`http://localhost:3000/api/myrecipes/`)
-          .then((response) => response.json())
-          .then((data) => { 
-            data.sort((a, b) => new Date(b.date) - new Date(a.date) );
-            this.recipes = data;})
-          .catch((err) => console.log(err.message));
-      },
-    },
-    mounted() {
-      this.fetchRecipes();
-      console.log("mounted");
-    },
-  }
-  </script>
-  
+    fetchUser(userId) {
+      return fetch(`http://localhost:3000/api/users/${userId}`)
+        .then(response => response.json())
+        .catch(err => console.log(err.message));
+    }
+  },
+
+  mounted() {
+    this.fetchRecipes();
+    console.log("mounted");
+  },
+}
+</script>
+
   <style scoped>
   #recipes-component{
     background-color: white;

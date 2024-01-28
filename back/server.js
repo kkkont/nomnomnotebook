@@ -123,7 +123,6 @@ app.put('/api/users/:id', async (req, res) => {
 
 app.get('/api/users/:id', async (req, res) => {
     try {
-        console.log("Get user request has arrived");
         const { id } = req.params;
         const post = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
 
@@ -147,16 +146,14 @@ app.post('/api/recipes', async (req, res) => {
             body: req.body.body,
             urllink: req.body.urllink,
             date: req.body.date,
-            author: req.body.author,
-            authorimg: req.body.authorimg,
             authorid:req.body.authorid,
             likes: req.body.likes,
             comments:req.body.comments,
             public:req.body.public
         };
         const newRecipe = await pool.query(
-            'INSERT INTO recipestable(title,body,urllink, date, author, authorimg,authorid,likes,comments,public) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-            [recipe.title, recipe.body, recipe.urllink, recipe.date, recipe.author,recipe.authorimg,recipe.authorid, recipe.likes, recipe.comments,recipe.public]
+            'INSERT INTO recipestable(title,body,urllink, date,authorid,likes,comments,public) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [recipe.title, recipe.body, recipe.urllink, recipe.date, recipe.authorid, recipe.likes, recipe.comments,recipe.public]
         );
         res.json(newRecipe);
     } catch (error) {

@@ -3,8 +3,8 @@
       <p class="item" v-for="recipe in recipes" :key="recipe.id">
         <div class="recipeHeader">
           <div class="user">
-            <img :src="recipe.authorimg" id="user_icon">
-            <h4 class="author">{{ recipe.author }}</h4>
+            <img :src="recipe.user.urllink" id="user_icon">
+            <h4 class="author">{{ recipe.user.name }}</h4>
           </div>
           <h4 class="date">{{ new Date(recipe.date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" }) }}</h4>
         </div>
@@ -32,13 +32,25 @@
   
     methods: {
       fetchRecipes() {
-        fetch(`http://localhost:3000/api/recipes/`)
-          .then((response) => response.json())
-          .then((data) => { 
-            data.sort((a, b) => new Date(b.date) - new Date(a.date) );
-            this.recipes = data;})
-          .catch((err) => console.log(err.message));
-      }
+      fetch(`http://localhost:3000/api/recipes/`)
+        .then(response => response.json())
+        .then(data => {
+          data.sort((a, b) => new Date(b.date) - new Date(a.date) );
+          const userPromises = data.map(recipe => this.fetchUser(recipe.authorid));
+          return Promise.all(userPromises).then(users => {
+            this.recipes = data.map((recipe, index) => ({
+              ...recipe,
+              user: users[index],
+            }));
+          });
+        })
+        .catch(err => console.log(err.message));
+    },
+    fetchUser(userId) {
+      return fetch(`http://localhost:3000/api/users/${userId}`)
+        .then(response => response.json())
+        .catch(err => console.log(err.message));
+    }
     },
     mounted() {
       this.fetchRecipes();

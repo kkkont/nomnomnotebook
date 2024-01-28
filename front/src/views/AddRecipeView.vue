@@ -47,15 +47,12 @@ export default {
     return; // Do not proceed with the post
   }
       const formattedDate = new Date();
-      const author = this.user.name;
       const authorid = this.user.id;
       var data = {
         title: this.recipe.title,
         body: this.recipe.body,
         urllink: this.recipe.urllink,
         date: formattedDate,
-        author: author,
-        authorimg: this.user.urllink,
         authorid: authorid,
         likes: 0,
         comments: 0,

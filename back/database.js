@@ -8,13 +8,13 @@ const pool = new Pool({
     port: "5432"
 });
 
-const execute = async(query, query1,query2, query3) => {
+const execute = async(query, query1,query2) => {
     try {
         await pool.connect(); // create a connection
         await pool.query(query);
         await pool.query(query1); // executes a query
         await pool.query(query2);
-        await pool.query(query3);
+    
         return true;
     } catch (error) {
         console.error(error.stack);
@@ -39,8 +39,6 @@ const createTblQuery1 = `
 	    "body" VARCHAR(200) NOT NULL,
         "urllink" VARCHAR(200), 
         "date" VARCHAR(200) NOT NULL,
-        "author" VARCHAR(200) NOT NULL,
-        "authorimg" VARCHAR(500),
         "authorid" uuid,
         "likes" INT,
         "comments" INT,
@@ -59,13 +57,9 @@ const createTblQuery1 = `
         "likes" INT
     );`;
 
-    const createRecipeQuery = `
-    INSERT INTO recipestable(title, body, urllink, date, author, likes, comments, public)
-    VALUES ('Esimene retsept', 'Muna ja sool', '', '26-04-2024', 'Kadri', 6, 8, false)
-    RETURNING *`;
+  
 
-
-execute(createTblQuery, createTblQuery1, createTblQuery2, createRecipeQuery).then(result => {
+execute(createTblQuery, createTblQuery1, createTblQuery2).then(result => {
     if (result) {
         console.log('Tables "users", "recipestable", and "recipecommenttable" are created');
     }
