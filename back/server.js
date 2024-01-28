@@ -87,7 +87,6 @@ app.post('/auth/login', async (req, res) => {
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
-
         if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
 
         const token = await generateJWT(user.rows[0].id);
@@ -105,6 +104,40 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
+
+app.put('/api/users/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name,urllink, description} = req.body;
+        const updatedUser = await pool.query(
+            'UPDATE users SET name = $1,urllink = $2, description = $3 WHERE id = $4 RETURNING *',
+            [name,urllink, description, id]
+        );
+
+        res.json(updatedUser.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/users/:id', async (req, res) => {
+    try {
+        console.log("Get user request has arrived");
+        const { id } = req.params;
+        const post = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+
+        if (post.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(post.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 app.post('/api/recipes', async (req, res) => {
     try {

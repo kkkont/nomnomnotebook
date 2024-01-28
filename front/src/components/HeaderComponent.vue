@@ -9,7 +9,7 @@
       <img src="https://cdn-icons-png.flaticon.com/512/8038/8038492.png" id="user">
       <div class="dropdown-content" v-if="showDropdown">
         <!-- Dropdown options -->
-        <a href="#">Account settings</a>
+        <router-link to="/settings">Account settings</router-link>
         <a @click="Logout()">Log Out</a>
       </div>
     </div>
