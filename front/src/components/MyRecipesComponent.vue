@@ -1,6 +1,6 @@
 <template>
   <div id="recipes-component">
-    <p class="item" v-for="recipe in recipes" :key="recipe.id">
+    <p class="item" v-for="recipe in recipes" :key="recipe.id" @click="viewRecipe(recipe.id, $event)">
       <div class="recipeHeader">
         <div class="user">
           <img :src="recipe.user.urllink" id="user_icon">
@@ -50,7 +50,12 @@ export default {
       return fetch(`http://localhost:3000/api/users/${userId}`)
         .then(response => response.json())
         .catch(err => console.log(err.message));
-    }
+    },
+    viewRecipe(recipeId, event) {
+      if (!event.target.classList.contains('heart-button')) {
+        this.$router.push({ name: 'edit', params: { recipeId } });
+      }
+    },
   },
 
   mounted() {

@@ -199,3 +199,51 @@ app.get('/api/myrecipes', async (req, res) => {
     }
 });
 
+app.get('/api/recipes/:id', async (req, res) => {
+    try {
+        console.log("get single recipe request has arrived");
+       
+        const { id } = req.params;
+        const post = await pool.query("SELECT * FROM recipestable WHERE id = $1", [id]);
+
+        if (post.rows.length === 0) {
+            return res.status(404).json({ error: 'Recipe not found' });
+        }
+
+        res.json(post.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.delete('/api/recipes/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(`delete recipe with id ${id} request has arrived`);
+
+        await pool.query('DELETE FROM recipestable WHERE id = $1', [id]);
+
+        res.json({ message: `Recipe with id ${id} deleted successfully` });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.put('/api/recipes/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, body, urllink,public} = req.body;
+
+        const updatedRecipe = await pool.query(
+            'UPDATE recipestable SET title = $1, body = $2, urllink = $3, public = $4 WHERE id = $5 RETURNING *',
+            [title, body, urllink, public, id]
+        );
+
+        res.json(updatedRecipe.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});

@@ -1,9 +1,8 @@
 <template>
-    <HeaderComponent></HeaderComponent>
-    <div style="margin:20px">
-    <div class="addpost">
-      <h1>Add a Recipe</h1>
-      <input type="title" name="title" required v-model="recipe.title" placeholder="The Name of Your Mouthwatering Creation">
+<HeaderComponent></HeaderComponent>
+<div class="editrecipe">
+    <h1>Spice up Your Recipe!</h1>
+    <input type="title" name="title" required v-model="recipe.title" placeholder="The Name of Your Mouthwatering Creation">
       <input type="body" name="body" required v-model="recipe.body" placeholder="Compose Your Recipe Tale" style="height:100px">
       <label for="url">Add a picture url:</label>
       <div class="url">
@@ -19,97 +18,93 @@
       <label for="check-5"></label>
     </div>
   </div>
-      </div>
-      <button @click="AddRecipe"  class="center">Drop Culinary Magic!</button>
-      <h4>Your recipe is in your control! <br>You can edit or delete it easily on the "My Recipes" page.</h4>
+</div>
+<div class="buttons">
+      <button @click="updateRecipe" id="updatebutton">Lock in Your Heat!</button>
+      <button @click="deleteRecipe" id="deletebutton">Delete Recipe!</button>
     </div>
-  </div>
-  </template>
-
+    </div>
+</template>
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue';
 export default {
-  name: "AddPost",
+  name: "EditRecipe",
   components:{
     HeaderComponent,
   },
   data() {
     return {
-      recipe: {
-        title: "",
-        body: "",
-        urllink: "",
-        public: false,
-      },
-      user: {},
+      recipe: {},
     };
   },
   methods: {
-    async AddRecipe() {
-      await this.fetchUser(); // Wait for fetchUser to complete
-      if (!this.recipe.title || !this.recipe.body ) {
-    console.log("Please fill in all required fields.");
-    return; // Do not proceed with the post
-  }
-      const formattedDate = new Date();
-      const authorid = this.user.id;
-      var data = {
-        title: this.recipe.title,
-        body: this.recipe.body,
-        urllink: this.recipe.urllink,
-        date: formattedDate,
-        authorid: authorid,
-        likes: 0,
-        comments: 0,
-        public: this.recipe.public || false,
-      };
-
-      // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
-      fetch("http://localhost:3000/api/recipes", {
-        method: "POST",
+    deleteRecipe() {
+      const recipeId = this.recipe.id;
+      fetch(`http://localhost:3000/api/recipes/${recipeId}`, {
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        credentials: "include",
-        body: JSON.stringify(data),
       })
         .then((response) => {
-          console.log(response.data);
+          console.log('Recipe deleted successfully');
           this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
-          console.log("error");
         });
     },
-    async fetchUser() {
-      try {
-        const response = await fetch(`http://localhost:3000/api/users/`);
-        const data = await response.json();
-        this.user = data;
-      } catch (err) {
-        console.log(err.message);
-      }
+    updateRecipe() {
+      fetch(`http://localhost:3000/api/recipes/${this.recipe.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: this.recipe.title,
+          body: this.recipe.body,
+          urllink: this.recipe.urllink,
+          public:this.recipe.public
+        }),
+      })
+        .then((response) => response.json())
+        .then((updatedRecipe) => {
+          this.$router.push("/");
+          console.log("Recipe updated successfully", updatedRecipe);
+        })
+        .catch((error) => {
+          console.error("Error updating post", error);
+        });
     },
+    fetchRecipe(recipeId) {
+      fetch(`http://localhost:3000/api/recipes/${recipeId}`)
+        .then((response) => response.json())
+        .then((data) => (this.recipe = data))
+        .catch((err) => console.log(err.message));
+    },clearUrllink() {
+      this.recipe.urllink = '';
+    },
+  },
+
+  mounted() {
+    const recipeId = this.$route.params.recipeId;
+    this.fetchRecipe(recipeId);
   },
 };
 
 </script>
-
 <style scoped>
-.addpost {
+.editrecipe{
+    background-color: white;
     display:flex;
-    flex-direction:column;
-    max-width: 600px;
-    align-items: center;
+    flex-direction: column;
+    width:70%;
     margin:auto;
-    background-color:  white;
-    text-align: left;
-    padding: 40px;
-    border-radius: 25px;
+    border-radius:25px;
+    justify-content: center;
+    align-items: center;
+    padding:20px;
 }
-
-
 input {
     margin: 10px;
     background-color: white;
@@ -124,16 +119,8 @@ input {
     color: #de3c808d;
     font-style: italic;
   }
-  h4{background-color: white;
-  text-align: center;}
 
-.center {
-  margin: auto;
-  border: 0;
-  padding: 10px 20px;
-  margin-top: 20px;
-  width: 30%; 
-}
+
 .checkbox {
     display:flex;
     align-items: center;
@@ -145,17 +132,30 @@ label{
 button {
     padding: 10px;
     margin: 10px;
-    width:200px;
     font-size: 20px;
     border-radius: 15px;
     font-weight: bold;
     color: white;
     background-color: #f58eb9;
+    border:none;
   }
   
   button:hover {
     background-color: #fb74ac;
   }
+#updatebutton{
+    background-color: #6cc87c;
+}
+#deletebutton{
+    background-color: #f16076;
+}
+
+#deletebutton:hover{
+    box-shadow: 1px 3px 9px 6px rgba(255,150,150,0.75);
+}
+#updatebutton:hover{
+    box-shadow: 1px 3px 9px 6px rgba(115, 228, 149, 0.75);
+}
   .preview{
     max-height:350px;
     border: 5px solid #f1c4d7;
@@ -166,6 +166,11 @@ button {
     background-color: white;
     width:70%;
     justify-content: center;
+  }
+  .buttons{
+    display:flex;
+    background-color: white;
+   
   }
 /* Used checkbox from this website https://getcssscan.com/css-checkboxes-examples.
 This one is created by David Darnes */
@@ -270,9 +275,3 @@ This one is created by David Darnes */
         background-color:  white;
     }
 </style>
-  
-
-
-  
-
-  
