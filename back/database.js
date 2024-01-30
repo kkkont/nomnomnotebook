@@ -8,12 +8,13 @@ const pool = new Pool({
     port: "5432"
 });
 
-const execute = async(query, query1,query2) => {
+const execute = async(query, query1,query2,query3) => {
     try {
         await pool.connect(); // create a connection
         await pool.query(query);
         await pool.query(query1); // executes a query
         await pool.query(query2);
+        await pool.query(query3);
     
         return true;
     } catch (error) {
@@ -36,8 +37,8 @@ const createTblQuery1 = `
     CREATE TABLE IF NOT EXISTS "recipestable" (
 	    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),         
 	    "title" VARCHAR(200) NOT NULL,
-	    "body" VARCHAR(200) NOT NULL,
-        "urllink" VARCHAR(200), 
+	    "body" VARCHAR(1000) NOT NULL,
+        "urllink" VARCHAR(500), 
         "date" VARCHAR(200) NOT NULL,
         "authorid" uuid,
         "likes" INT,
@@ -49,17 +50,21 @@ const createTblQuery1 = `
     CREATE TABLE IF NOT EXISTS "recipecommenttable" (
 	    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         "recipe_id" uuid NOT NULL,         
-	    "body" VARCHAR(200) NOT NULL,
-        "urllink" VARCHAR(200), 
+	    "body" VARCHAR(1000) NOT NULL,
+        "urllink" VARCHAR(500), 
         "date" VARCHAR(200) NOT NULL,
         "author" VARCHAR(200) NOT NULL,
         "authorid" uuid,
         "likes" INT
     );`;
+    
+    const createTblQuery3 = `CREATE TABLE IF NOT EXISTS likes (
+        like_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE, 
+        recipe_id UUID REFERENCES recipestable(id) ON DELETE CASCADE
+    );`
 
-  
-
-execute(createTblQuery, createTblQuery1, createTblQuery2).then(result => {
+execute(createTblQuery, createTblQuery1, createTblQuery2,createTblQuery3).then(result => {
     if (result) {
         console.log('Tables "users", "recipestable", and "recipecommenttable" are created');
     }

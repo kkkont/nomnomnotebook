@@ -12,7 +12,7 @@
         <p class="text"> {{ recipe.body }} </p>
         <img v-if="recipe.urllink" class="img" :src="recipe.urllink" alt="Post Image">
         <div class="likescomments">
-            <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon>
+           <button @click="buttonClicked(recipe.id)"> <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon></button>
           <h4 class="likes"> {{ recipe.likes }} </h4>
           <font-awesome-icon icon="comment" class="fa-regular fa-comment like"></font-awesome-icon>
           <h4 class="comments"> {{ recipe.comments }} </h4>
@@ -50,7 +50,68 @@
       return fetch(`http://localhost:3000/api/users/${userId}`)
         .then(response => response.json())
         .catch(err => console.log(err.message));
+    },
+    async buttonClicked(recipeId) {
+      
+  try {
+    const isLiked = await this.checkIfLiked(recipeId);
+
+    if (isLiked) {
+      await this.deleteLike(recipeId);
+    } else {
+      await this.addLike(recipeId);
     }
+    const recipe = this.recipes.find((r) => r.id === recipeId);
+    if (recipe) {
+      recipe.likes = isLiked ? recipe.likes - 1 : recipe.likes + 1;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+},
+
+async checkIfLiked(recipeId) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/likes/check/${recipeId}`);
+    const data = await response.json();
+    return data.likeExists;
+  } catch (error) {
+    console.error(error);
+    return false; // Return false in case of an error
+  }
+},
+
+async deleteLike(recipeId) {
+  try {
+    await fetch(`http://localhost:3000/api/likes/delete/${recipeId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('Like deleted successfully');
+  } catch (error) {
+    console.error(error);
+  }
+},
+
+async addLike(recipeId) {
+  const data = { recipe_id: recipeId };
+
+  try {
+    const response = await fetch("http://localhost:3000/api/likes/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    console.log('Like added successfully');
+  } catch (error) {
+    console.error(error);
+  }
+}
     },
     mounted() {
       this.fetchRecipes();
@@ -120,6 +181,9 @@
     padding-right:10px;
     background-color: #fcedf3;
 }
+.like:hover{
+  color:#f0649c;
+}
 
 .likescomments{
     display: flex;
@@ -134,5 +198,9 @@
 }
 .comments{
     background-color: #fcedf3;
+}
+button{
+  border:none;
+  background-color: #fcedf3;
 }
   </style>

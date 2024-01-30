@@ -247,3 +247,48 @@ app.put('/api/recipes/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.get('/api/likes/check/:recipe_id', async (req, res) => {
+ try {
+    console.log("Check if liked request has arrived")
+    const { recipe_id } = req.params;
+
+    const result = await pool.query('SELECT EXISTS (SELECT 1 FROM likes WHERE user_id = $1 AND recipe_id = $2)', [activeUserId, recipe_id]);
+    const likeExists = result.rows[0].exists;
+    res.json({ likeExists });
+ } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+ }
+});
+
+
+
+app.post('/api/likes/add', async (req, res) => {
+ try {
+    const { recipe_id } = req.body;
+   await pool.query('INSERT INTO likes (user_id, recipe_id) VALUES ($1, $2)', [activeUserId, recipe_id]);
+   await pool.query('UPDATE recipestable SET likes = likes + 1 WHERE id = $1', [recipe_id]);
+
+   res.json({ success: true });
+ } catch (error) {
+   console.error(error);
+   res.status(500).json({ error: 'Internal Server Error' });
+ }
+});
+
+
+app.delete('/api/likes/delete/:recipe_id', async (req, res) => {
+ try {
+    const {recipe_id } = req.params;
+    console.log(`Delete like from post id ${recipe_id} request has arrived`);
+   await pool.query('DELETE FROM likes WHERE user_id = $1 AND recipe_id = $2', [activeUserId, recipe_id]);
+   await pool.query('UPDATE recipestable SET likes = likes - 1 WHERE id = $1', [recipe_id]);
+
+   res.json({ success: true });
+ } catch (error) {
+   console.error(error);
+   res.status(500).json({ error: 'Internal Server Error' });
+ }
+});
+
