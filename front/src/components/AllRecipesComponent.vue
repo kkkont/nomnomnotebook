@@ -1,6 +1,6 @@
 <template>
     <div id="recipes-component">
-      <p class="item" v-for="recipe in recipes" :key="recipe.id">
+      <p class="item" v-for="recipe in recipes" :key="recipe.id" @click="viewRecipe(recipe.id, $event)">
         <div class="recipeHeader">
           <div class="user">
             <img :src="recipe.user.urllink" id="user_icon">
@@ -12,7 +12,7 @@
         <p class="text"> {{ recipe.body }} </p>
         <img v-if="recipe.urllink" class="img" :src="recipe.urllink" alt="Post Image">
         <div class="likescomments">
-           <button @click="buttonClicked(recipe.id)"> <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon></button>
+           <button @click="buttonClicked(recipe.id)" class="like-button"> <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon></button>
           <h4 class="likes"> {{ recipe.likes }} </h4>
           <font-awesome-icon icon="comment" class="fa-regular fa-comment like"></font-awesome-icon>
           <h4 class="comments"> {{ recipe.comments }} </h4>
@@ -111,7 +111,12 @@ async addLike(recipeId) {
   } catch (error) {
     console.error(error);
   }
-}
+},
+viewRecipe(recipeId, event) {
+  if (!event.target.closest('.like-button')) {
+        this.$router.push({ name: 'recipe', params: { recipeId } });
+      }
+    },
     },
     mounted() {
       this.fetchRecipes();

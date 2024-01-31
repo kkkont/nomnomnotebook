@@ -6,6 +6,7 @@ import SignUpView from '../views/SignUpView.vue'
 import AddRecipeView from '../views/AddRecipeView.vue'
 import AccountSettingsView from '../views/AccountSettingView.vue'
 import EditRecipeView from '../views/EditRecipeView.vue'
+import ViewRecipeView from '../views/ViewRecipeView.vue'
 import auth from "../auth";
 
 const routes = [
@@ -51,6 +52,11 @@ const routes = [
     path:'/edit/:recipeId',
     name:'edit',
     component:EditRecipeView
+  },
+  {
+    path:'/recipe/:recipeId',
+    name:'recipe',
+    component:ViewRecipeView
   }
 ]
 

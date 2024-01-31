@@ -8,13 +8,14 @@ const pool = new Pool({
     port: "5432"
 });
 
-const execute = async(query, query1,query2,query3) => {
+const execute = async(query, query1,query2,query3, query4) => {
     try {
         await pool.connect(); // create a connection
         await pool.query(query);
         await pool.query(query1); // executes a query
         await pool.query(query2);
         await pool.query(query3);
+        await pool.query(query4);
     
         return true;
     } catch (error) {
@@ -51,10 +52,8 @@ const createTblQuery1 = `
 	    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         "recipe_id" uuid NOT NULL,         
 	    "body" VARCHAR(1000) NOT NULL,
-        "urllink" VARCHAR(500), 
         "date" VARCHAR(200) NOT NULL,
-        "author" VARCHAR(200) NOT NULL,
-        "authorid" uuid,
+        "authorid" uuid NOT NULL,
         "likes" INT
     );`;
     
@@ -63,8 +62,14 @@ const createTblQuery1 = `
         user_id UUID REFERENCES users(id) ON DELETE CASCADE, 
         recipe_id UUID REFERENCES recipestable(id) ON DELETE CASCADE
     );`
-
-execute(createTblQuery, createTblQuery1, createTblQuery2,createTblQuery3).then(result => {
+    
+    const createTblQuery4 = `CREATE TABLE IF NOT EXISTS commentlikes (
+        like_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE, 
+        comment_id UUID REFERENCES recipecommenttable(id) ON DELETE CASCADE
+    );`
+    
+execute(createTblQuery, createTblQuery1, createTblQuery2,createTblQuery3, createTblQuery4).then(result => {
     if (result) {
         console.log('Tables "users", "recipestable", and "recipecommenttable" are created');
     }

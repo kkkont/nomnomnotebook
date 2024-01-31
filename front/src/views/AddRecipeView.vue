@@ -4,7 +4,7 @@
     <div class="addpost">
       <h1>Add a Recipe</h1>
       <input type="title" name="title" required v-model="recipe.title" placeholder="The Name of Your Mouthwatering Creation">
-      <input type="body" name="body" required v-model="recipe.body" placeholder="Compose Your Recipe Tale" style="height:100px">
+      <textarea id="recipeBody" v-model="recipe.body" placeholder="Compose Your Recipe Tale" style="height: 100px;"></textarea>
       <label for="url">Add a picture url:</label>
       <div class="url">
       <input type="url" name="url" required v-model="recipe.urllink" placeholder="Capture the Culinary Artwork">
@@ -110,7 +110,7 @@ export default {
 }
 
 
-input {
+input,textarea {
     margin: 10px;
     background-color: white;
     padding: 10px;
@@ -119,8 +119,15 @@ input {
     font-size: 15px;
     border-radius: 5px;
   }
+  textarea{
+    max-width: 70%;
+  }
   
   input::placeholder {
+    color: #de3c808d;
+    font-style: italic;
+  }
+  textarea::placeholder{
     color: #de3c808d;
     font-style: italic;
   }

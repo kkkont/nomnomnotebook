@@ -292,3 +292,95 @@ app.delete('/api/likes/delete/:recipe_id', async (req, res) => {
  }
 });
 
+app.get('/api/comments/:recipe_id', async (req, res) => {
+    try {
+        console.log('Get recipe comments request has arrived')
+        const { recipe_id } = req.params;
+        const comments = await pool.query("SELECT * FROM recipecommenttable WHERE recipe_id = $1", [recipe_id]);
+   
+        res.json(comments.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/api/comments', async (req, res) => {
+    try {
+        console.log("Add a comment request has arrived");
+        const comment = {
+            recipe_id: req.body.recipe_id,
+            body: req.body.body,
+            date: req.body.date,
+            authorid:req.body.authorid,
+            likes: req.body.likes
+        };
+        const newComment = await pool.query(
+            'INSERT INTO recipecommenttable(recipe_id,body, date,authorid,likes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [comment.recipe_id, comment.body, comment.date, comment.authorid, comment.likes]
+        );
+        await pool.query('UPDATE recipestable SET comments = comments + 1 WHERE id = $1', [comment.recipe_id]);
+   
+        res.json(newComment);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+app.delete('/api/comments/:comment_id', async (req, res) => {
+    try {
+        const {comment_id} = req.params;
+        console.log(`Delete comment request has arrived`);
+
+       await pool.query('DELETE FROM recipecommenttable WHERE id = $1', [comment_id]);
+       
+       res.json({ success: true });
+     } catch (error) {
+       console.error(error);
+       res.status(500).json({ error: 'Internal Server Error' });
+     }
+});
+
+
+app.get('/api/likes/comment/check/:comment_id', async (req, res) => {
+    try {
+       console.log("Check if liked request has arrived")
+       const { comment_id } = req.params;
+   
+       const result = await pool.query('SELECT EXISTS (SELECT 1 FROM commentlikes WHERE user_id = $1 AND comment_id = $2)', [activeUserId, comment_id]);
+       const likeExists = result.rows[0].exists;
+       res.json({ likeExists });
+    } catch (error) {
+       console.error(error);
+       res.status(500).json({ error: 'Internal Server Error' });
+    }
+   });
+   
+   
+   app.post('/api/likes/comment/add', async (req, res) => {
+    try {
+       const { comment_id } = req.body;
+      await pool.query('INSERT INTO commentlikes (user_id, comment_id) VALUES ($1, $2)', [activeUserId, comment_id]);
+      await pool.query('UPDATE recipecommenttable SET likes = likes + 1 WHERE id = $1', [comment_id]);
+   
+      res.json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+   });
+   
+   
+   app.delete('/api/likes/comment/delete/:comment_id', async (req, res) => {
+    try {
+       const {comment_id } = req.params;
+       console.log(`Delete like from comment id ${comment_id} request has arrived`);
+      await pool.query('DELETE FROM commentlikes WHERE user_id = $1 AND comment_id = $2', [activeUserId, comment_id]);
+      await pool.query('UPDATE recipecommenttable SET likes = likes - 1 WHERE id = $1', [comment_id]);
+   
+      res.json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+   });

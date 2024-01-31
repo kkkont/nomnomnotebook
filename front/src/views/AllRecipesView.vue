@@ -19,14 +19,6 @@
       HeaderComponent,
       AllRecipesComponent,
     },
-    methods:{
-        fetchRecipes() {
-        fetch(`http://localhost:3000/api/recipes/`)
-            .then((response) => response.json())
-         .then((data) => (this.recipes = data))
-         .catch((err) => console.log(err.message));
-    },
-    }
   };
   </script>
   
