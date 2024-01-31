@@ -13,7 +13,7 @@
         <p class="text"> {{ recipe.body }} </p>
         <img v-if="recipe.urllink" class="img" :src="recipe.urllink" alt="Post Image">
         <div class="likescomments">
-           <button @click="buttonClicked(recipe.id)" class="like-button"> <font-awesome-icon icon="heart" class="fa-regular fa-heart like"></font-awesome-icon></button>
+           <font-awesome-icon icon="heart" @click="buttonClicked(recipe.id)" class="like-button"></font-awesome-icon>
           <h4 class="likes"> {{ recipe.likes }} </h4>
           <font-awesome-icon icon="comment" class="fa-regular fa-comment like"></font-awesome-icon>
           <h4 class="comments"> {{ recipe.comments }} </h4>
@@ -236,13 +236,13 @@ export default {
   font-size: large;
   background-color: #fcedf3;
 }
-.like{
+.like,.like-button{
     font-size:30px;
     color:#fb8ab7;
     padding-right:10px;
     background-color: #fcedf3;
 }
-.like:hover{
+.like:hover,.like-button:hover{
   color:#f0649c;
 }
 
@@ -270,9 +270,31 @@ button{
         display:flex;
         justify-content: center;
         padding:20px;
-    }
-    textarea{
-        width:60%;
-        margin-right: 30px;
-    }
+}
+
+textarea {
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    max-height:300px;
+    max-width: 70%; 
+    min-width: 70%;
+    color: #de3c808d;
+    font-size: 15px;
+    border-radius: 5px;
+  }
+  button {
+    padding: 10px;
+    margin: 10px;
+    width:200px;
+    font-size: 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: #f58eb9;
+  }
+  
+  button:hover {
+    background-color: #fb74ac;
+  }
 </style>

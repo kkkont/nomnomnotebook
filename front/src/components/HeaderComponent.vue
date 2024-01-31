@@ -6,7 +6,7 @@
         <a><router-link to="/shared">SHARED RECIPES</router-link></a>
     </nav>
     <div class="dropdown" @click="toggleDropdown">
-      <img src="https://cdn-icons-png.flaticon.com/512/8038/8038492.png" id="user">
+      <font-awesome-icon id="user" icon="fa-solid fa-user"></font-awesome-icon>
       <div class="dropdown-content" v-if="showDropdown">
         <!-- Dropdown options -->
         <router-link to="/settings">Account settings</router-link>
@@ -86,8 +86,10 @@ nav a.router-link-exact-active {
   color: #ff4136;
 }
 #user{
-    width:70px;
+  height:50px;
+    width:50px;
     background-color: white;
+    color:#e27da9;
 }
 .dropdown {
   position: relative;

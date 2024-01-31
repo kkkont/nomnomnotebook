@@ -216,4 +216,16 @@ button{
   border:none;
   background-color: #fcedf3;
 }
+textarea {
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    width: 60%;
+    color: #de3c808d;
+    font-size: 15px;
+    border-radius: 5px;
+  }
+  textarea{
+    max-width: 70%;
+  }
 </style>
