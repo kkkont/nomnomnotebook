@@ -17,7 +17,7 @@
         </h4>
       </div>
       <h4 class="title">{{ recipe.title }}</h4>
-      <p class="text">{{ recipe.body }}</p>
+      <p class="text" v-html="formatRecipeBody(recipe.body)"></p>
       <img
         v-if="recipe.urllink"
         class="img"
@@ -59,6 +59,9 @@ export default {
   },
 
   methods: {
+    formatRecipeBody(body) {
+      return body.replace(/\n/g, "<br>");
+    },
     fetchRecipes() {
       fetch(`http://localhost:3000/api/myrecipes/`)
         .then((response) => response.json())

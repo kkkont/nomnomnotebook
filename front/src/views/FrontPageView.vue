@@ -125,7 +125,7 @@ b {
 .logo {
   max-width: 90%;
   max-height: 90%;
-  animation: fadeInOut 5s ease-in-out forwards;
+  animation: fadeInOut 3s ease-in-out forwards;
 }
 @keyframes fadeIn {
   from {

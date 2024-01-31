@@ -123,7 +123,6 @@ h1 {
 .about {
   display: flex;
   align-items: center;
-  width: 70%;
   padding: 10px;
   border: 5px solid #f1c4d7;
   border-radius: 25px;
@@ -139,6 +138,13 @@ h1 {
   background-color: white;
   font-size: large;
   font-weight: bold;
+}
+.img {
+  max-height: 500px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  background-color: #fcedf3;
 }
 
 .addbutton {

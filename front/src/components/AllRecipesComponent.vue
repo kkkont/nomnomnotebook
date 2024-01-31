@@ -22,7 +22,7 @@
         </h4>
       </div>
       <h4 class="title">{{ recipe.title }}</h4>
-      <p class="text">{{ recipe.body }}</p>
+      <p class="text" v-html="formatRecipeBody(recipe.body)"></p>
       <img
         v-if="recipe.urllink"
         class="img"
@@ -57,6 +57,9 @@ export default {
   },
 
   methods: {
+    formatRecipeBody(body) {
+      return body.replace(/\n/g, "<br>");
+    },
     fetchRecipes() {
       fetch(`http://localhost:3000/api/recipes/`)
         .then((response) => response.json())
@@ -209,6 +212,14 @@ export default {
   font-size: large;
   background-color: #fcedf3;
 }
+.img {
+  max-height: 500px; /* Set your desired max-height */
+  width: auto;
+  object-fit: contain; /* Preserve aspect ratio */
+  border-radius: 10px; /* Optional: Add border-radius */
+  background-color: #fcedf3;
+}
+
 .like {
   font-size: 30px;
   color: #fb8ab7;
