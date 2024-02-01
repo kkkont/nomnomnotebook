@@ -24,17 +24,21 @@
       <MyRecipesComponent></MyRecipesComponent>
     </div>
   </div>
+  <FooterComponent></FooterComponent>
 </template>
 
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import MyRecipesComponent from "@/components/MyRecipesComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+
 import auth from "../auth";
 export default {
   name: "MyRecipesView",
   components: {
     HeaderComponent,
     MyRecipesComponent,
+    FooterComponent,
   },
   data: function () {
     return {

@@ -35,12 +35,30 @@
       </div>
     </div>
     <div class="sidebar">
-      <button @click="this.$router.push('/welcome')" class="aboutbutton">
+      <button
+        v-if="authResult"
+        @click="this.$router.push('/')"
+        class="aboutbutton"
+      >
+        Return
+      </button>
+      <button v-else @click="this.$router.push('/welcome')" class="aboutbutton">
         Return
       </button>
     </div>
   </div>
 </template>
+<script>
+import auth from "../auth";
+export default {
+  name: "AboutView",
+  data: function () {
+    return {
+      authResult: auth.authenticated(),
+    };
+  },
+};
+</script>
 <style scoped>
 .frontpage {
   align-items: start;
