@@ -1,5 +1,13 @@
 <template>
   <div id="recipes-component">
+    <h1 v-if="!recipes.length">Create Your first recipe!</h1>
+    <button
+      v-if="!recipes.length"
+      class="addbutton"
+      @click="this.$router.push('/addrecipe')"
+    >
+      Add a recipe
+    </button>
     <div class="item" v-for="recipe in recipes" :key="recipe.id">
       <div class="recipeHeader">
         <div class="user">
@@ -247,5 +255,10 @@ export default {
   margin: 0;
   justify-content: space-between;
   background-color: #fcedf3;
+}
+
+.addbutton {
+  background-color: #ff9cc0;
+  color: white;
 }
 </style>

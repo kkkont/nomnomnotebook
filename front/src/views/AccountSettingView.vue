@@ -12,8 +12,8 @@
         name="name"
         required
         v-model="user.name"
-        placeholder="Change your name or nickname"
-        style="width: 100px"
+        placeholder="Change your name"
+        style="width: 150px"
       />
     </div>
     <img :src="user.urllink" id="profilephoto" />
@@ -150,5 +150,8 @@ button {
 }
 button:hover {
   background-color: #fb74ac;
+}
+.about {
+  width: 40%;
 }
 </style>
