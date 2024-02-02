@@ -13,7 +13,7 @@ import auth from "../auth";
 const routes = [
   {
     path: "/",
-    name: "myrecipes",
+    name: "My Recipes",
     component: MyRecipesView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -26,7 +26,7 @@ const routes = [
   },
   {
     path: "/shared",
-    name: "sharedrecipes",
+    name: "Shared Recipes",
     component: AllRecipesView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -39,17 +39,17 @@ const routes = [
   },
   {
     path: "/welcome",
-    name: "frontpage",
+    name: "",
     component: FrontPageView,
   },
   {
     path: "/signup",
-    name: "signup",
+    name: "Sign Up",
     component: SignUpView,
   },
   {
     path: "/addrecipe",
-    name: "addrecipe",
+    name: "Add a Recipe",
     component: AddRecipeView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -62,7 +62,7 @@ const routes = [
   },
   {
     path: "/settings",
-    name: "settings",
+    name: "Settings",
     component: AccountSettingsView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -75,7 +75,7 @@ const routes = [
   },
   {
     path: "/edit/:recipeId",
-    name: "edit",
+    name: "Edit",
     component: EditRecipeView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -88,7 +88,7 @@ const routes = [
   },
   {
     path: "/recipe/:recipeId",
-    name: "recipe",
+    name: "Recipe",
     component: ViewRecipeView,
     beforeEnter: async (to, from, next) => {
       let authResult = await auth.authenticated();
@@ -101,7 +101,7 @@ const routes = [
   },
   {
     path: "/about",
-    name: "about",
+    name: "About",
     component: AboutView,
   },
 ];

@@ -17,7 +17,14 @@ const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 // Use the router and store plugins
-app.use(router).use(store);
+const vueApp = app.use(router).use(store);
+
+// Set up a beforeRouteUpdate guard to update the title on route change
+router.beforeEach((to, from, next) => {
+  // Update the title based on the route name
+  document.title = to.name ? `${to.name} ⏐ NomNomNotebook` : "NomNomNotebook";
+  next();
+});
 
 // Mount the app to the '#app' element
-app.mount("#app");
+vueApp.mount("#app");
