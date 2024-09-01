@@ -8,7 +8,6 @@
     <div class="dropdown" @click="toggleDropdown">
       <font-awesome-icon id="user" icon="fa-solid fa-user"></font-awesome-icon>
       <div class="dropdown-content" v-if="showDropdown">
-        <!-- Dropdown options -->
         <router-link to="/settings">Account settings</router-link>
         <a @click="Logout()">Log Out</a>
       </div>
@@ -29,15 +28,13 @@ export default {
     },
     Logout() {
       fetch("http://localhost:3000/auth/logout", {
-        credentials: "include", //  Don't forget to specify this if you need cookies
+        credentials: "include",
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           console.log("jwt removed");
-          //console.log('jwt removed:' + auth.authenticated());
           this.$router.push("/welcome");
-          //location.assign("/");
         })
         .catch((e) => {
           console.log(e);
@@ -72,7 +69,7 @@ nav {
 }
 
 nav a {
-  margin: 0 10px; /* Add margin for spacing between links */
+  margin: 0 10px;
   text-align: center;
   color: #e27da9;
   text-decoration: none;

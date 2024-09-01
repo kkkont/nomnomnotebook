@@ -213,10 +213,10 @@ export default {
   background-color: #fcedf3;
 }
 .img {
-  max-height: 500px; /* Set your desired max-height */
+  max-height: 500px;
   width: auto;
-  object-fit: contain; /* Preserve aspect ratio */
-  border-radius: 10px; /* Optional: Add border-radius */
+  object-fit: contain;
+  border-radius: 10px;
   background-color: #fcedf3;
 }
 

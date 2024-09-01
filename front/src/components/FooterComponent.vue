@@ -22,15 +22,14 @@ export default {
   methods: {
     Logout() {
       fetch("http://localhost:3000/auth/logout", {
-        credentials: "include", //  Don't forget to specify this if you need cookies
+        credentials: "include",
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           console.log("jwt removed");
-          //console.log('jwt removed:' + auth.authenticated());
+
           this.$router.push("/welcome");
-          //location.assign("/");
         })
         .catch((e) => {
           console.log(e);

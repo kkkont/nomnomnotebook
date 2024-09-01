@@ -122,7 +122,7 @@ export default {
         return data.likeExists;
       } catch (error) {
         console.error(error);
-        return false; // Return false in case of an error
+        return false;
       }
     },
 
